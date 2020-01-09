@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+    {% block title %}
+    {{ novel.title }} - {{ block.super }}
+    {% endblock %}
+
+    {% block body %}
+
+<div class="container">
+  <div class="row">
+    <div class="thumbnail" style="height:310px;background-color:#191919;border:1px solid #191919;">
+      <div class="" style=" float:left;height:300px;">
+        {% if novel.img %}
+            <img style="width:205px;height:300px; padding: 5px;border-radius:15px;background-color:#191919;border:1px solid #191919;"src="{{ novel.img.url }}" class="img-responsave thumbnail" alt="{{ novel.title }}">
+        {% endif %}
+      </div>
+      <div class="" style="margin-left:5px;float:left;height:300px;width:950px;">
+        <div class="" style="">
+          <h3><a style="color:#afabab;" href="{{ novel.get_absolute_url }}">{{ novel.title }}</a> <small>{{ novel.publishing_date |timesince }} önce</small></h3>
+        </div>
+        <div class="" style="w">
+        <div class="" style="float:left;margin:5px;width:200px;">
+          <h5 style="color:#afabab;"><strong>Yazar:</strong><p> {{ novel.auth }}</p></h5>
+          <h5 style="color:#afabab;"><strong>Uploader     : </strong><p>{{ novel.user }}</p></h5>
+          <h5 style="color:#afabab;"><strong>Diğer Adlar  : </strong><p>{{ novel.name}}</p></h5>
+          <h5 style="color:#afabab;"><strong>Novel Tipi   : </strong><p>{{ novel.type }}</p></h5>
+        </div>
+
+        <div class="" style="float:left; margin:5px; max-height:240px;width:200px;overflow-x:hidden;">
+          <h5 style="color:#afabab;"><strong>Novel Türü   :</strong><p>{{ novel.genre }}</p></h5>
+          <h5 style="color:#afabab;"><strong>Novel Etiketi:</strong><p>{{ novel.tags }}</p></h5>
+          <h5 style="color:#afabab;"><strong>Orjinal Dil  :</strong><p>{{ novel.league }}</p></h5>
+          <h5 style="color:#afabab;"><strong>Çıkış Yılı   :</strong><p>{{ novel.year }}</p></h5>
+        </div>
+        </div>
+      </div>
+
+    </div>
+
+
+
+      <div class="thumbnail" style="color:#afabab;background-color:#100d0d;border:1px solid  #100d0d;">
+        <h4 style="color:#afabab;"><strong>Konusu</strong></h4>
+        <p>{{ novel.content|safe|linebreaks }}</p>
+      </div>
+
+
+        {% if not novel.Bölümler.all %}
+          <div class="" style="width:100%;">
+            <div class="caption thumbnail" style="width:100%;background-color:#984545">
+                <h5><strong style="color:white;"><center style="padding-top: 3px;padding-bottom: 3px;">
+                  Bu Novele ait bölüm bulunmamaktadır</center></strong></h5>
+            </div>
+          </div>
+        {% endif %}
+
+        <div class="" style="width:100%;">
+        {% for chapter in novel.Bölümler.all %}
+            <div class="caption thumbnail" style="width:380px; margin:5px;float: left;background-color:#191919;border:1px solid #191919;">
+                <h5 style="color:#afabab;"><strong><a href="{{chapter.get_absolute_url}}">{{ chapter.chapter_number }}.Bölüm </a>|</strong> {{ chapter.chapter_name|truncatechars:25 }}   <small style="margin-left: 3px;">{{ chapter.created_date|timesince }} önce</small></h5>
+            </div>
+        {% endfor %}
+        </div>
+
+
+
+        <div class="" style="width:100%;">
+            <div class="caption thumbnail" style="width:100%; margin:5px;float: left;background-color:#191919;border:1px solid #191919;">
+                <h5 style="color:#afabab;"><strong>Yorum Ekle:</strong></h5>
+                {% include 'post/comments.html' %}
+            </div>
+        </div>
+
+        <div class="" style="width:100%;">
+          {% for comments in novel.novelcomment.all %}
+            <div class="caption thumbnail" style="color:#afabab;font-size:16px;width:100%; margin:5px;float: left;background-color:#191919;border:1px solid #191919;">
+              <h5 style="color:#afabab; font-size:16px;"><strong>{{ comments.nc_name }} | </strong><small>{{ comments.nc_created_date }}</small></h5>
+              <p style="color:#afabab;font-size:16px;">{{ comments.nc_content|linebreaks }}</p>
+              {% if request.user.is_authenticated %}
+                <a href="{{ comments.get_delete_url }}" class="btn btn-primary" role="button" data-toggle="">Sil</a>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+    {% endblock %}

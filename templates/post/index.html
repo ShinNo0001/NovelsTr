@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+    {% block title %}
+    Novel List - {{ block.super }}
+    {% endblock %}
+
+    {% block body %}
+
+        {# post/{{ post.id }} #}
+        {# url 'İçerik' id=post.id #}
+        <div class="container">
+          <div class="row">
+            <h4 style="color:#afabab;"><strong>Novel Listesi</strong></h4>
+            <div style="width:100%;height:1px;background-color:#afabab;">
+
+            </div>
+
+          </div>
+
+        </div>
+
+<div class="container" style="margin-top:5px;" >
+
+
+        {% for novels in novels %}
+            <div class="row" style="float: left; width:130px; height:270px; margin:5px;" >
+                <div>
+                    <div class="thumbnail" style="background-color:#191919;border:1px solid #191919;height:270px; width:130px;">
+                        {% if novels.img %}
+                            <img style="width: 125px; height:150px;border-radius:6px;"src="{{ novels.img.url }}" class="img-responsave"/>
+                        {% endif %}
+                        <div class="caption">
+                            <h5 ><a href="{{ novels.get_absolute_url }}">{{ novels.title|truncatechars:12 }}</a></h5>
+                            <h5 style="color:#afabab;"><strong>Uploader: {{ novels.user|truncatechars:12 }}</strong></h5>
+                            <p>
+                                <a href="{{ novels.get_absolute_url }}" class="btn btn-primary" role="button">Noveli Oku</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="pagination">
+            <span class="step-links">
+                {% if novels.has_previous %}
+                    <a href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">&laquo; first</a>
+                    <a href="?page={{ novels.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ novels.number }} of {{ novels.paginator.num_pages }}.
+                </span>
+
+                {% if novels.has_next %}
+                    <a href="?page={{ novels.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">next</a>
+                    <a href="?page={{ novels.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+
+</div>
+
+    {% endblock %}

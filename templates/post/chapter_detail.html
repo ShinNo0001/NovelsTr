@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+    {% block title %}
+    {{ chapter.chapter_name }} - {{ block.super }}
+    {% endblock %}
+
+    {% block body %}
+
+<div class="container">
+  <div class="row">
+
+    <div class="thumbnail" style="width:100%;margin-bottom:0px;margin-top:2px;color:#afabab;background-color:#100d0d;border:1px solid  #100d0d;font-size:20px;">
+      <center><h3 style="color:#afabab;"><strong>{{ chapter.novel|safe|linebreaks }}  </strong><strong>Bölüm {{ chapter.chapter_number}} | </strong><strong>{{ chapter.chapter_name }}</strong></h3>
+</center>
+    </div>
+
+    <div class="thumbnail" style="margin-bottom:0px;margin-top:2px;color:#afabab;background-color:#100d0d;border:1px solid  #100d0d;font-size:20px;">
+      <center><h4 style="color:#984545;"><strong>Çevirmen: {{ chapter.cevirmen }} & </strong><strong>Redaktör: {{ chapter.redaktor }} </strong></h4>
+</center>
+    </div>
+
+      <div class="thumbnail" style="margin:auto;width: 900px;color:#afabab;background-color:#100d0d;border:1px solid  #100d0d; font-size:20px;">
+
+        <p>{{ chapter.chapter_content|safe|linebreaks }}</p>
+      </div>
+
+      <div class="" style="width:900px;margin:auto;">
+          <div class="caption thumbnail" style="width:100%; margin:5px;float: left;background-color:#191919;border:1px solid #191919;">
+              <h5 style="color:#afabab;"><strong>Yorum Ekle:</strong></h5>
+              {% include 'post/comments.html' %}
+          </div>
+      </div>
+
+      <div class="" style="width:900px;margin:auto;">
+        {% for comments in chapter.chaptercomment.all %}
+          <div class="caption thumbnail" style="color:#afabab;font-size:16px;width:100%; margin:5px;float: left;background-color:#191919;border:1px solid #191919;">
+            <h5 style="color:#afabab; font-size:16px;"><strong>{{ comments.cc_name }} | </strong><small>{{ comments.cc_created_date }}</small></h5>
+            <p style="color:#afabab;font-size:16px;">{{ comments.cc_content|linebreaks }}</p>
+            {% if request.user.is_authenticated %}
+              <a href="{{ comments.get_delete_url }}" class="btn btn-primary" role="button" data-toggle="">Sil</a>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+  <a class="btn btn-danger" data-toggle="collapse" style="border: 1px solid #337ab7; background-color: #337ab7;position:fixed; bottom:10px;right:10px;" href="#collapse_ornek">B</a>
+
+  <div class="collapse" style="border-radius: 10px;max-height: 400px;width: 600px; border: 1px solid #337ab7; background-color: #191919;position:fixed; bottom:10px;right:50px;" id="collapse_ornek">
+    <div class="scrollbar"style="height:385px;overflow-x:hidden;" >
+      <div style="width: 300px;">
+        <h5 style="width: 150px;color:#337ab7;margin-left:5px;"><strong>Bölümler</strong></h5>
+        <div style="width: 270px;margin-left:5px;height: 1px;background-color:#337ab7;"></div>
+      </div>
+
+
+
+
+<div style="width:600px;">
+
+
+  {% for chapter in novel.Bölümler.all %}
+      <div class="caption thumbnail" style="width:90px; margin:2px;float: left;background-color:#191919;border:1px solid #191919;">
+          <h5 style="color:#afabab;"><strong><a href="{{chapter.get_absolute_url}}" class="btn btn-primary" role="button">{{ chapter.chapter_number }}.Bölüm </a></h5>
+      </div>
+  {% endfor %}
+</div>
+    </div>
+
+
+
+
+  </div>
+
+
+
+    {% endblock %}

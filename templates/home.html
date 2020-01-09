@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Anasayfa - {{ block.super }}
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+  <div class="row">
+    <h4 style="color:#afabab;"><strong>Yeni Novel Bölümleri</strong></h4>
+    <div style="width:100%;height:1px;background-color:#afabab;">
+
+    </div>
+
+  </div>
+
+</div>
+<div class="container" style="margin-top: 10px;">
+    <div class="row">
+
+          {% for chapters in chapter %}
+              <div class="row caption" style="float: left; width:580px; height:90px; margin:2px;" >
+
+                      <div class="thumbnail"style="background-color:#191919;border:1px solid #191919;margin:3px;">
+                          <div style="height: 80px;margin-top:-10px;">
+                            {# if novels.img #}
+                              <div class="" style=" float:left;">
+                                <img src="{{ chapters.novel.img.url }}" style="width: 60px; height:80px;border-radius:7px; margin-left: 1px;" class="img-responsave"/>
+                              </div>
+                            {# endif #}
+                              <div class="" style="margin-left:70px;">
+                                <div class="" style="margin:2px; "><h5 style="color:#afabab;"><strong><a href="{{ chapters.novel.get_absolute_url }}">{{ chapters.novel}} </a></strong><small>{{ chapters.created_date|timesince }} önce</small></h5></div>
+                                <div class="" style="margin:2px; float:;"><h5 style="color:#afabab;"><strong>{{ chapters.chapter_number }}.Bölüm | </strong>{{ chapters.chapter_name}}</h5></div>
+
+
+
+                                <div class="" style="margin:2px; ">
+                                  <p>
+                                    <a href="{{ chapters.get_absolute_url }}" class="btn btn-primary" style="height:30px; padding:5px;" role="button">Oku</a>
+                                  </p>
+                                </div>
+                              </div>
+
+                          </div>
+                      </div>
+                  </div>
+
+          {% endfor %}
+
+
+<div class="pagination">
+    <span class="step-links">
+        {% if chapter.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ chapter.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ chapter.number }} of {{ chapter.paginator.num_pages }}.
+        </span>
+
+        {% if chapter.has_next %}
+            <a href="?page={{ chapter.next_page_number }}">next</a>
+            <a href="?page={{ chapter.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+        </div>
+
+    </div>
+{% endblock %}
